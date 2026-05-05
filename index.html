@@ -74,7 +74,7 @@
       height: 80px;
     }
 
-  .boton {
+  .button {
     margin-top: 15px;
     padding: 10px 16px;
     border: none;
@@ -290,11 +290,11 @@ color: #333;
 
 </div>
 
-<boton id="restartBtn">Presiona R para reiniciar el juego</boton>
+<button id="restartBtn">Presiona R para reiniciar el juego</button>
 
 <div class="message" id="message"></div>
 
-<button id="restartGameBtn" class="boton">Reiniciar</button>
+<button id="restartGameBtn" class="button">Reiniciar</button>
 
   </div>
 
@@ -351,27 +351,29 @@ color: #333;
       return newcomida;
     }
 
-    function startGame() {
-      snake = [
-        restartGameBtn.style.display = "none";
-        { x: 200, y: 200 }
-      ];
+   function startGame() {
 
-      dx = grid;
-      dy = 0;
-      puntaje = 0;
-      gameOver = false;
-      puntajeText.textContent = puntaje;
+  restartGameBtn.style.display = "none";
 
-      comida = createcomida();
+  snake = [
+    { x: 200, y: 200 }
+  ];
 
-      if (loop) {
-        clearInterval(loop);
-      }
+  dx = grid;
+  dy = 0;
+  puntaje = 0;
+  gameOver = false;
+  puntajeText.textContent = puntaje;
 
-      draw();
-      loop = setInterval(update, 120);
-    }
+  comida = createcomida();
+
+  if (loop) {
+    clearInterval(loop);
+  }
+
+  draw();
+  loop = setInterval(update, 120);
+}
 
     function draw() {
       ctx.fillStyle = bgColor;
@@ -525,7 +527,7 @@ document.getElementById("down").addEventListener("click", function () {
 
     restartBtn.addEventListener("click", startGame);
     restartGameBtn.addEventListener("click", startGame);
-    
+
     startGame();
   </script>
 </body>
