@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>snake</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: white;
+      color: black;
+    }
+
+    .contenedor {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      margin-top: 100px;
+    }
+
+    .controles {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+
+    .control {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: white;
+      padding: 8px 12px;
+      border-radius: 8px;
+    }
+
+    canvas {
+      border: 3px solid white;
+      background: black;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .barra-logos {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     gap: 150px;
+     background: #1B396A;
+     box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+     padding: 10px 20px;
+     border-bottom: 3px solid #ccc;
+
+    z-index: 1000;
+    
+    }
+
+    .barra-logos img {
+      height: 80px;
+      object-fit: contain;
+    }
+
+    .barra-logos img:last-child {
+      height: 80px;
+    }
+
+  .boton {
+    margin-top: 15px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    }
+
+    .puntaje {
+      margin-bottom: 12px;
+      font-size: 18px;
+    }
+
+.tablero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 100px;
+  margin-top: 20px;
+}
+
+.qr-box {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+}
+
+.mascota {
+  width: 120px;
+  transform: translateX(120px); 
+}
+
+.qr-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.qr-content img {
+  width: 160px;
+  height: auto;
+}
+
+.qr-texto {
+  margin-top: 10px;
+  font-size: 14px;
+  text-align: center;
+  color: #333;
+}
+
+.qr-texto {
+margin-top: 10px;
+font-size: 14px;
+text-align: center;
+color: #333;
+}
+
+.message {
+  margin-top: 10px;
+  display: none;
+  font-size: 18px;
+  color: #b60303;
+  min-height: 24px;
+    }
+
+    #restartBtn {
+  display: block;
+  margin: 20px auto;
+}
+
+@media (max-width: 768px) {
+
+  .barra-logos {
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .barra-logos img {
+    height: 50px;
+  }
+
+  .contenedor {
+    margin-top: 140px;
+    padding: 10px;
+  }
+
+  .tablero {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .mascota {
+    transform: none;
+    width: 90px;
+  }
+
+  .qr-content img {
+    width: 120px;
+  }
+
+  canvas {
+    width: 90vw;
+    height: 90vw;
+    max-width: 400px;
+    max-height: 400px;
+  }
+}
+
+.touch-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.touch-controls button {
+  font-size: 24px;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 10px;
+  background: #1B396A;
+  color: white;
+  cursor: pointer;
+}
+
+.vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.touch-controls {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .touch-controls {
+    display: flex;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div class="barra-logos">
+    <img src="logo_educacion.png" alt="educacion">
+    <img src="logoBlanco.webp" alt="Tecnm">
+    <img src="logoITI3.png" alt="ITI3">
+</div>
+
+  <div class="contenedor">
+    <h1>Snake</h1>
+
+    <div class="puntaje">Puntaje: <span id="puntaje">0</span></div>
+    <div class="puntaje">Récord mas alto: <span id="highpuntaje">0</span></div>
+
+    <div class="controles">
+      <div class="control">
+        <label for="snakeColor">Serpiente</label>
+        <input type="color" id="snakeColor" value="#00ff00">
+      </div>
+
+      <div class="control">
+        <label for="comidaColor">Comida</label>
+        <input type="color" id="comidaColor" value="#ff0000">
+      </div>
+
+      <div class="control">
+        <label for="bgColor">Tablero</label>
+        <input type="color" id="bgColor" value="#000000">
+      </div>
+    </div>
+
+   <div class="tablero">
+
+  <canvas id="game"></canvas>
+
+  <div class="touch-controls">
+
+  <button id="left">⬅️</button>
+
+  <div class="vertical">
+    <button id="up">⬆️</button>
+    <button id="down">⬇️</button>
+  </div>
+
+  <button id="right">➡️</button>
+
+</div>
+
+  <div class="qr-box">
+    <img src="mascotaTec.png" class="mascota" alt="Mascota ITI3">
+
+    <div class="qr-content">
+      <img src="OfertaQR.jpg" alt="QR convocatoria">
+      <p class="qr-texto">¡Conoce más sobre nuestra oferta educativa escaneando este QR!</p>
+    </div>
+  </div>
+
+</div>
+
+<boton id="restartBtn">Presiona R para reiniciar el juego</boton>
+
+<div class="message" id="message"></div>
+
+  </div>
+
+  <script>
+    const canvas = document.getElementById("game");
+    const ctx = canvas.getContext("2d");
+    canvas.width = 400;
+    canvas.height = 400;
+
+    const puntajeText = document.getElementById("puntaje");
+    const highpuntajeText = document.getElementById("highpuntaje");
+    const messageText = document.getElementById("message");
+
+    const snakeColorInput = document.getElementById("snakeColor");
+    const comidaColorInput = document.getElementById("comidaColor");
+    const bgColorInput = document.getElementById("bgColor");
+    const restartBtn = document.getElementById("restartBtn");
+
+    const grid = 20;
+    const size = canvas.width / grid;
+
+    let snakeColor = snakeColorInput.value;
+    let comidaColor = comidaColorInput.value;
+    let bgColor = bgColorInput.value;
+
+    let snake;
+    let comida;
+    let dx;
+    let dy;
+    let puntaje;
+    let gameOver;
+    let gameOverMessage = "";
+    let loop;
+    let highpuntaje = localStorage.getItem("snakeHighpuntaje") || 0;
+    highpuntajeText.textContent = highpuntaje;
+
+    function randomPosition() {
+      return {
+        x: Math.floor(Math.random() * size) * grid,
+        y: Math.floor(Math.random() * size) * grid
+      };
+    }
+
+    function issnakeAtPosition(x, y) {
+      return snake.some(part => part.x === x && part.y === y);
+    }
+
+    function createcomida() {
+      let newcomida;
+      do {
+        newcomida = randomPosition();
+      } while (issnakeAtPosition(newcomida.x, newcomida.y));
+      return newcomida;
+    }
+
+    function startGame() {
+      snake = [
+        { x: 200, y: 200 }
+      ];
+
+      dx = grid;
+      dy = 0;
+      puntaje = 0;
+      gameOver = false;
+      puntajeText.textContent = puntaje;
+
+      comida = createcomida();
+
+      if (loop) {
+        clearInterval(loop);
+      }
+
+      draw();
+      loop = setInterval(update, 120);
+    }
+
+    function draw() {
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = comidaColor;
+      ctx.fillRect(comida.x, comida.y, grid - 1, grid - 1);
+
+      ctx.fillStyle = snakeColor;
+      for (let i = 0; i < snake.length; i++) {
+        ctx.fillRect(snake[i].x, snake[i].y, grid - 1, grid - 1);
+      }
+
+      if (gameOver) {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.65)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "red";
+        ctx.font = "40px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2 - 10);
+        ctx.font = "16px Arial";
+
+        ctx.fillStyle = "red";
+        ctx.font = "16px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText(gameOverMessage, canvas.width / 2, canvas.height / 2 + 30);
+      }
+    }
+
+    function update() {
+      if (gameOver) return;
+
+      const head = {
+        x: snake[0].x + dx,
+        y: snake[0].y + dy
+      };
+
+      if (
+        head.x < 0 ||
+        head.x >= canvas.width ||
+        head.y < 0 ||
+        head.y >= canvas.height
+      ) {
+        gameOver = true;
+        gameOverMessage = "La serpiente chocó con la pared.";
+        clearInterval(loop);
+        draw();
+        return;
+      }
+
+      for (let i = 0; i < snake.length; i++) {
+        if (head.x === snake[i].x && head.y === snake[i].y) {
+          gameOver = true;
+          gameOverMessage = "La serpiente se mordió a sí misma.";
+          clearInterval(loop);
+          draw();
+          return;
+        }
+      }
+
+      snake.unshift(head);
+
+      if (head.x === comida.x && head.y === comida.y) {
+        puntaje++;
+        puntajeText.textContent = puntaje;
+
+      if (puntaje > highpuntaje) {
+    highpuntaje = puntaje;
+    localStorage.setItem("snakeHighpuntaje", highpuntaje);
+    highpuntajeText.textContent = highpuntaje;
+  }
+
+        comida = createcomida();
+      } else {
+        snake.pop();
+      }
+
+      draw();
+    }
+
+    document.addEventListener("keydown", function (e) {
+      console.log(e.key);
+      if ((e.key === "ArrowLeft" || e.key.toLowerCase() === "a" || e.key === "A") && dx !== grid) {
+        dx = -grid;
+        dy = 0;
+      } else if ((e.key === "ArrowRight" || e.key.toLowerCase() === "d" || e.key === "D") && dx !== -grid) {
+        dx = grid;
+        dy = 0;
+      } else if ((e.key === "ArrowUp" || e.key.toLowerCase() === "w" || e.key === "W") && dy !== grid) {
+        dx = 0;
+        dy = -grid;
+      } else if ((e.key === "ArrowDown" || e.key.toLowerCase() === "s" || e.key === "S") && dy !== -grid) {
+        dx = 0;
+        dy = grid;
+      }
+
+      if (e.key === "r" || e.key === "R") {
+        startGame();
+      }
+
+    });
+
+    document.getElementById("left").addEventListener("click", function () {
+  if (dx !== grid) {
+    dx = -grid;
+    dy = 0;
+  }
+});
+
+document.getElementById("right").addEventListener("click", function () {
+  if (dx !== -grid) {
+    dx = grid;
+    dy = 0;
+  }
+});
+
+document.getElementById("up").addEventListener("click", function () {
+  if (dy !== grid) {
+    dx = 0;
+    dy = -grid;
+  }
+});
+
+document.getElementById("down").addEventListener("click", function () {
+  if (dy !== -grid) {
+    dx = 0;
+    dy = grid;
+  }
+});
+
+    snakeColorInput.addEventListener("input", function () {
+      snakeColor = this.value;
+      draw();
+    });
+
+    comidaColorInput.addEventListener("input", function () {
+      comidaColor = this.value;
+      draw();
+    });
+
+    bgColorInput.addEventListener("input", function () {
+      bgColor = this.value;
+      draw();
+    });
+
+    restartBtn.addEventListener("click", startGame);
+
+    startGame();
+  </script>
+</body>
+</html>
