@@ -94,6 +94,7 @@
   align-items: center;
   gap: 100px;
   margin-top: 20px;
+  position: relative;
 }
 
 .qr-box {
@@ -140,9 +141,15 @@ color: #333;
   min-height: 24px;
     }
 
-    #restartBtn {
-  display: block;
-  margin: 20px auto;
+#restartGameBtn {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  background: #1B396A;
+  color: white;
 }
 
 @media (max-width: 768px) {
@@ -265,6 +272,8 @@ color: #333;
    <div class="tablero">
 
   <canvas id="game"></canvas>
+
+   <button id="restartGameBtn" class="button">Reiniciar</button>
 
   <div class="touch-controls">
 
