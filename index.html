@@ -218,6 +218,18 @@ color: #333;
   }
 }
 
+#restartGameBtn {
+  display: none;
+  margin-top: 15px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  background: #1B396A;
+  color: white;
+}
+
   </style>
 </head>
 <body>
@@ -282,6 +294,8 @@ color: #333;
 
 <div class="message" id="message"></div>
 
+<button id="restartGameBtn" class="boton">Reiniciar</button>
+
   </div>
 
   <script>
@@ -298,6 +312,7 @@ color: #333;
     const comidaColorInput = document.getElementById("comidaColor");
     const bgColorInput = document.getElementById("bgColor");
     const restartBtn = document.getElementById("restartBtn");
+    const restartGameBtn = document.getElementById("restartGameBtn");
 
     const grid = 20;
     const size = canvas.width / grid;
@@ -338,6 +353,7 @@ color: #333;
 
     function startGame() {
       snake = [
+        restartGameBtn.style.display = "none";
         { x: 200, y: 200 }
       ];
 
@@ -404,6 +420,8 @@ color: #333;
         gameOverMessage = "La serpiente chocó con la pared.";
         clearInterval(loop);
         draw();
+
+        restartGameBtn.style.display = "block";
         return;
       }
 
@@ -413,6 +431,9 @@ color: #333;
           gameOverMessage = "La serpiente se mordió a sí misma.";
           clearInterval(loop);
           draw();
+
+
+restartGameBtn.style.display = "block";
           return;
         }
       }
@@ -503,7 +524,8 @@ document.getElementById("down").addEventListener("click", function () {
     });
 
     restartBtn.addEventListener("click", startGame);
-
+    restartGameBtn.addEventListener("click", startGame);
+    
     startGame();
   </script>
 </body>
